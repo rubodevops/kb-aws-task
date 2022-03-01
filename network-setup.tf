@@ -91,30 +91,30 @@ resource "aws_route_table" "private_rt" {
 
 #Associate  route table of VPC(cloudx) with our route table entries
 resource "aws_route_table_association" "public_a" {
-  subnet_id = aws_subnet.public_a.id
+  subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.public_rt.id
 }
 resource "aws_route_table_association" "public_b" {
-  subnet_id = aws_subnet.public_b.id
+  subnet_id      = aws_subnet.public_b.id
   route_table_id = aws_route_table.public_rt.id
 }
 resource "aws_route_table_association" "public_c" {
-  subnet_id = aws_subnet.public_c.id
+  subnet_id      = aws_subnet.public_c.id
   route_table_id = aws_route_table.public_rt.id
 }
 
 
 
 resource "aws_route_table_association" "private_a" {
-  subnet_id = aws_subnet.private_a.id
+  subnet_id      = aws_subnet.private_a.id
   route_table_id = aws_route_table.private_rt.id
 }
 resource "aws_route_table_association" "private_b" {
-  subnet_id = aws_subnet.private_b.id
+  subnet_id      = aws_subnet.private_b.id
   route_table_id = aws_route_table.private_rt.id
 }
 resource "aws_route_table_association" "private_c" {
-  subnet_id = aws_subnet.private_c.id
+  subnet_id      = aws_subnet.private_c.id
   route_table_id = aws_route_table.private_rt.id
 }
 
@@ -235,8 +235,8 @@ resource "aws_subnet" "private_db_c" {
 
 resource "aws_db_subnet_group" "ghost" {
   description = "ghost database subnet group"
-  provider   = aws.region-master
-  subnet_ids = [aws_subnet.private_db_a.id, aws_subnet.private_db_b.id, aws_subnet.private_db_c.id]
+  provider    = aws.region-master
+  subnet_ids  = [aws_subnet.private_db_a.id, aws_subnet.private_db_b.id, aws_subnet.private_db_c.id]
 
   tags = {
     Name = "ghost database subnet group"

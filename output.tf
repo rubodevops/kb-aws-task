@@ -3,5 +3,6 @@ output "LB" {
 
 }
 
-output "region" { 
-  value = var.region-master }
+output "region" {
+  value = var.region-master
+}

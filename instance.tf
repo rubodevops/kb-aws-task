@@ -3,7 +3,7 @@
 # Create RDS instance
 resource "aws_db_instance" "ghost" {
   provider               = aws.region-master
-  storage_type         = "gp2"
+  storage_type           = "gp2"
   allocated_storage      = 20
   engine                 = "mysql"
   engine_version         = "8.0"
@@ -34,7 +34,7 @@ resource "aws_ssm_parameter" "secret" {
 data "template_file" "userdata_ubuntu" {
   template = file("${path.module}/userdata_ubuntu.tpl")
   vars = {
-     db_url_tpl       = "${aws_db_instance.ghost.endpoint}"
+    db_url_tpl = "${aws_db_instance.ghost.endpoint}"
   }
 }
 

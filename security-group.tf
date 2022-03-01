@@ -2,8 +2,8 @@
 
 resource "aws_security_group" "ec2_pool" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "allows access for ec2 instances"
 
 
@@ -16,10 +16,10 @@ resource "aws_security_group" "ec2_pool" {
   }
 
   ingress {
-    from_port   = 2368
-    to_port     = 2368
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.alb.id}"]   
+    from_port       = 2368
+    to_port         = 2368
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.alb.id}"]
   }
 
   ingress {
@@ -50,8 +50,8 @@ resource "aws_security_group" "ec2_pool" {
 
 resource "aws_security_group" "fargate_pool" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "allows access for fargate instances"
 
 
@@ -64,10 +64,10 @@ resource "aws_security_group" "fargate_pool" {
   }
 
   ingress {
-    from_port   = 2368
-    to_port     = 2368
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.alb.id}"]   
+    from_port       = 2368
+    to_port         = 2368
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.alb.id}"]
   }
 
   egress {
@@ -87,24 +87,24 @@ resource "aws_security_group" "fargate_pool" {
 
 resource "aws_security_group" "mysql" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "defines access to ghost db"
 
 
 
   ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.ec2_pool.id}"]
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.ec2_pool.id}"]
   }
 
   ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.fargate_pool.id}"]    
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.fargate_pool.id}"]
   }
 
   tags = {
@@ -118,24 +118,24 @@ resource "aws_security_group" "mysql" {
 
 resource "aws_security_group" "efs" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "defines access to efs mount points"
 
 
 
   ingress {
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.fargate_pool.id}"]  
+    from_port       = 2049
+    to_port         = 2049
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.fargate_pool.id}"]
   }
 
   ingress {
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-    security_groups=   ["${aws_security_group.ec2_pool.id}"]
+    from_port       = 2049
+    to_port         = 2049
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.ec2_pool.id}"]
   }
 
   egress {
@@ -157,8 +157,8 @@ resource "aws_security_group" "efs" {
 
 resource "aws_security_group" "alb" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "defines access to alb"
 
 
@@ -170,21 +170,21 @@ resource "aws_security_group" "alb" {
     cidr_blocks = [var.external_ip]
   }
 
-   
-   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-     security_groups=   ["${aws_security_group.ec2_pool.id}"]
-  }
-
- 
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-     security_groups=   ["${aws_security_group.fargate_pool.id}"] 
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = ["${aws_security_group.ec2_pool.id}"]
+  }
+
+
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = ["${aws_security_group.fargate_pool.id}"]
   }
 
   tags = {
@@ -202,8 +202,8 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group" "vpc_endpoint" {
 
-  provider = aws.region-master
-  vpc_id   = aws_vpc.cloudx.id
+  provider    = aws.region-master
+  vpc_id      = aws_vpc.cloudx.id
   description = "defines access to vpc endpoints"
 
 
@@ -215,7 +215,7 @@ resource "aws_security_group" "vpc_endpoint" {
     cidr_blocks = ["10.10.0.0/16"]
   }
 
-   tags = {
+  tags = {
     Name = "vpc_endpoint"
   }
 }
