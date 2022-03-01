@@ -12,16 +12,25 @@ resource "aws_db_instance" "ghost" {
   vpc_security_group_ids = ["${aws_security_group.mysql.id}"]
   name                   = var.database_name
   username               = var.database_user
-  password               = var.database_password
+  password               = random_password.password.result
   skip_final_snapshot    = true
 }
+
+
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
+
 
 
 resource "aws_ssm_parameter" "secret" {
   name        = "/gh/db/pass"
   description = "The parameter description"
   type        = "SecureString"
-  value       = var.database_password
+  value       = random_password.password.result
 
   tags = {
     Name = "ssm-parameter"

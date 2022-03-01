@@ -26,8 +26,8 @@ resource "aws_ecs_task_definition" "main" {
       portMappings = [
         {
           protocol      = "tcp"
-          containerPort = 2368
-          hostPort      = 80
+          containerPort = 8080
+          hostPort      = 2368
         }
       ]
     }
@@ -42,7 +42,7 @@ resource "aws_ecs_task_definition" "main" {
 
 
 resource "aws_ecs_service" "main" {
-  name                               = "${var.name}-service-${var.environment}"
+  name                               = "ghost-test"
   cluster                            = aws_ecs_cluster.ghost_cluster.id
   task_definition                    = aws_ecs_task_definition.main.arn
   desired_count                      = 2
@@ -58,8 +58,8 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.ghost-fargate.arn
-    container_name   = "${var.name}-container-${var.environment}"
-    container_port   = var.container_port
+    container_name   = "ghost-container"
+    container_port   = 2368
   }
 
   lifecycle {
